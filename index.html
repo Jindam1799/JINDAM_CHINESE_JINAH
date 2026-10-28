@@ -173,8 +173,7 @@
       <div class="intro-sec">
         <h3>어떤 게임이 있나요?</h3>
         <ul>
-          <li><b>초등 친구들</b> · 덩어리 숲속의 모험(그랑힐스), 한자어 탐정, 진담 한자어 놀이터</li>
-          <li><b>한자 쓰기</b> · 진담한자톡, 진담 HSK4 한자톡</li>
+          <li><b>한자 익히기</b> · 한자어 탐정, 진담 한자어 놀이터, 진담한자톡, 진담 HSK4 한자톡</li>
           <li><b>HSK 단어 게임</b> · 덩어리 숲속의 모험, 덩어리 숲, 진담점프, 진담 테트리스, 진담 블록퍼즐</li>
         </ul>
       </div>
@@ -198,8 +197,7 @@
     </header>
 
     <nav class="cats" aria-label="종류">
-      <a href="#kids">초등 친구들</a>
-      <a href="#write">한자 쓰기</a>
+      <a href="#write">한자 익히기</a>
       <a href="#hsk">HSK 단어 게임</a>
     </nav>
 
@@ -213,12 +211,9 @@
 <script>
   // 게임 목록: 새 게임은 여기 한 줄만 추가하면 돼요 (아이콘은 icons/ 폴더에)
   var CATS = [
-    { id: 'kids', name: '초등 친구들', note: '교과서·우리 동네 한자어로 중국어와 친해져요', color: '#f2c14e', games: [
-      { name: '덩어리 숲속의 모험(그랑힐스)', url: 'https://jindamchineseadventure.vercel.app/kids', icon: 'adventure', tags: ['초등', '한자어', '병음 함께'], desc: '학교·생일·우리 동네 한자어를 모으며 대나무숲을 달려요.', star: '우리 반' },
+    { id: 'write', name: '한자 익히기', note: '한자어를 쪼개 보고, 찾아보고, 획순대로 따라 쓰며 한자를 익혀요', color: '#e2504c', games: [
       { name: '한자어 탐정', url: 'https://jindamdetectivestudent.vercel.app/', icon: 'detective', tags: ['초등 저학년', '한자어', '탐정'], desc: '우리말 속 한자를 찾으면 중국어가 툭! 사건을 풀고 도장을 모아요.' },
       { name: '진담 한자어 놀이터', url: 'https://jindamhanzistudyfor-students.vercel.app/', icon: 'hanzistudy', tags: ['초등', '교과서 한자어', '매주 새로'], desc: '교과서 속 한자어를 쪼개 보고, 따라 쓰고, 중국어 소리까지 들어요.' },
-    ] },
-    { id: 'write', name: '한자 쓰기', note: '획순대로 따라 쓰며 한자를 손으로 익혀요', color: '#e2504c', games: [
       { name: '진담한자톡', url: 'https://jindamhanzitalk.vercel.app/', icon: 'hanzitalk', tags: ['부수', '한자 쓰기'], desc: '부수로 배우는 한자 쓰기 게임이에요.' },
       { name: '진담 HSK4 한자톡', url: 'https://jindamhanzitalkhsk4.vercel.app/', icon: 'hanzitalk4', tags: ['HSK 4급', '필수 어휘 1000', '쓰기'], desc: 'HSK 4급 필수 어휘를 직접 써 보며 익혀요.' },
     ] },
@@ -237,7 +232,7 @@
     CATS.forEach(function (c) {
       html += '<section class="cat" id="' + c.id + '" style="--c:' + c.color + '"><div class="cat-head"><h2>' + esc(c.name) + '</h2><p>' + esc(c.note) + '</p></div><div class="grid">';
       c.games.forEach(function (g) {
-        var tags = g.tags.map(function (t, i) { return '<span class="tag' + (i === 0 ? (c.id === 'kids' ? ' kids' : ' hsk') : '') + '">' + esc(t) + '</span>'; }).join('');
+        var tags = g.tags.map(function (t, i) { return '<span class="tag' + (i === 0 ? (c.id === 'write' ? ' kids' : ' hsk') : '') + '">' + esc(t) + '</span>'; }).join('');
         html += '<a class="card' + (g.star ? ' star' : '') + '" href="' + g.url + '" style="animation-delay:' + (0.04 * n++).toFixed(2) + 's">' +
           (g.star ? '<span class="badge">' + esc(g.star) + '</span>' : '') +
           '<div class="top"><img class="icon" src="icons/' + g.icon + '.png" alt=""><div><h3 class="name">' + esc(g.name) + '</h3><div class="tags">' + tags + '</div></div></div>' +

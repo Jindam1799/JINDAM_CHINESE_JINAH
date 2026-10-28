@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>진담중국어 게임 놀이터</title>
+<meta name="description" content="진담중국어 게임 모음 · 아이들이 골라서 하는 중국어 학습 게임">
+<meta name="theme-color" content="#fff6e6">
+<link rel="icon" href="icons/app-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="진담 놀이터">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #2a1a1f;
+    --paper: #fff9ef;
+    --cream: #fff1d6;
+    --bg: #fff6e6;
+    --gold: #f2c14e;
+    --red: #e2504c;
+    --jade: #2f9a7a;
+    --mute: #7a6a62;
+    --f: 'Jua', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body {
+    min-height: 100vh;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--f);
+    -webkit-text-size-adjust: 100%;
+    padding: calc(16px + env(safe-area-inset-top)) calc(16px + env(safe-area-inset-right)) calc(28px + env(safe-area-inset-bottom)) calc(16px + env(safe-area-inset-left));
+    overflow-x: hidden;
+  }
+  /* 배경: 흐릿하게 떠다니는 한자 */
+  .bg-hanzi { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+  .bg-hanzi span {
+    position: absolute; font-size: 64px; color: var(--gold); opacity: .18;
+    font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif; font-weight: 700;
+    animation: drift 14s ease-in-out infinite;
+  }
+  @keyframes drift { 50% { transform: translateY(-14px) rotate(4deg); } }
+  @media (prefers-reduced-motion: reduce) { .bg-hanzi span, .card { animation: none !important; } }
+
+  main { position: relative; z-index: 1; max-width: 1040px; margin: 0 auto; }
+  header { text-align: center; margin: 8px 0 22px; }
+  .logo {
+    width: 76px; height: 76px; border-radius: 20px; border: 4px solid var(--ink);
+    box-shadow: 0 5px 0 var(--ink); image-rendering: pixelated; background: #fff;
+  }
+  h1 {
+    margin: 12px 0 4px; font-weight: 400; font-size: clamp(30px, 7vw, 46px); letter-spacing: -.5px;
+  }
+  h1 .zh { color: var(--red); }
+  .hello { margin: 0; color: var(--mute); font-size: clamp(16px, 3.6vw, 20px); }
+
+  .grid {
+    display: grid; gap: 18px;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  }
+  .card {
+    position: relative; display: flex; flex-direction: column; gap: 10px;
+    background: var(--paper); border: 4px solid var(--ink); border-radius: 18px;
+    box-shadow: 0 7px 0 var(--ink); padding: 18px 18px 16px;
+    color: inherit; text-decoration: none;
+    transition: transform .12s ease, box-shadow .12s ease;
+    animation: pop .5s ease both;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .card:hover { transform: translateY(-3px); box-shadow: 0 10px 0 var(--ink); }
+  .card:active { transform: translateY(5px); box-shadow: 0 2px 0 var(--ink); }
+  .card:focus-visible { outline: 4px solid var(--jade); outline-offset: 4px; }
+  @keyframes pop { from { opacity: 0; transform: translateY(14px) scale(.97); } }
+  .card.star { background: #fff3c9; }
+  .top { display: flex; align-items: center; gap: 14px; }
+  .icon {
+    width: 72px; height: 72px; flex: none; border-radius: 16px; border: 3px solid var(--ink);
+    image-rendering: pixelated; background: #fff;
+  }
+  .name { margin: 0; font-weight: 400; font-size: 23px; line-height: 1.2; }
+  .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+  .tag {
+    font-size: 13px; padding: 2px 9px; border-radius: 999px; border: 2px solid var(--ink);
+    background: #fff;
+  }
+  .tag.kids { background: var(--gold); }
+  .tag.hsk { background: #d8f0e4; }
+  .desc { margin: 0; font-size: 16.5px; line-height: 1.45; color: #4a3a3f; min-height: 48px; }
+  .go {
+    align-self: stretch; text-align: center; margin-top: 2px;
+    background: var(--red); color: #fff; border: 3px solid var(--ink); border-radius: 12px;
+    box-shadow: 0 4px 0 var(--ink); padding: 9px 0; font-size: 20px;
+  }
+  .card.star .go { background: var(--jade); }
+  .badge {
+    position: absolute; top: -14px; right: 14px; background: var(--gold); border: 3px solid var(--ink);
+    border-radius: 10px; padding: 2px 10px; font-size: 14px; box-shadow: 0 3px 0 var(--ink);
+  }
+  footer { margin-top: 30px; text-align: center; color: var(--mute); font-size: 14px; line-height: 1.7; }
+  footer b { color: var(--ink); font-weight: 400; }
+</style>
+</head>
+<body>
+  <div class="bg-hanzi" aria-hidden="true">
+    <span style="left:4%;top:12%">中</span>
+    <span style="left:86%;top:8%;animation-delay:-3s">学</span>
+    <span style="left:12%;top:72%;animation-delay:-6s">玩</span>
+    <span style="left:80%;top:64%;animation-delay:-9s">好</span>
+    <span style="left:46%;top:88%;animation-delay:-2s">字</span>
+  </div>
+
+  <main>
+    <header>
+      <img class="logo" src="icons/app-192.png" alt="">
+      <h1>진담중국어 <span class="zh">게임 놀이터</span></h1>
+      <p class="hello">오늘은 어떤 게임으로 중국어를 만나 볼까?</p>
+    </header>
+
+    <section class="grid" aria-label="게임 고르기">
+      <a class="card star" href="https://jindamchineseadventure.vercel.app/kids" style="animation-delay:.05s">
+        <span class="badge">우리 반</span>
+        <div class="top">
+          <img class="icon" src="icons/adventure.png" alt="">
+          <div>
+            <h2 class="name">우리 반 중국어 모험</h2>
+            <div class="tags"><span class="tag kids">초등</span><span class="tag">한자어</span><span class="tag">병음 함께</span></div>
+          </div>
+        </div>
+        <p class="desc">학교·생일·우리 동네 한자어를 모으며 대나무숲을 달려요.</p>
+        <span class="go">시작!</span>
+      </a>
+
+      <a class="card" href="https://jindamchineseadventure.vercel.app/" style="animation-delay:.12s">
+        <div class="top">
+          <img class="icon" src="icons/adventure.png" alt="">
+          <div>
+            <h2 class="name">덩어리 숲속의 모험</h2>
+            <div class="tags"><span class="tag hsk">HSK 4급</span><span class="tag">짝꿍어휘</span><span class="tag">모험</span></div>
+          </div>
+        </div>
+        <p class="desc">진담이와 숲을 탐험하며 짝꿍어휘를 모으고 숲의 보스를 물리쳐요.</p>
+        <span class="go">시작!</span>
+      </a>
+
+      <a class="card" href="https://jindamjump.vercel.app/" style="animation-delay:.19s">
+        <div class="top">
+          <img class="icon" src="icons/jump.png" alt="">
+          <div>
+            <h2 class="name">진담점프</h2>
+            <div class="tags"><span class="tag hsk">HSK</span><span class="tag">듣기</span><span class="tag">점프</span></div>
+          </div>
+        </div>
+        <p class="desc">용암을 피해 위로 점프! 중국어를 듣고 뜻을 골라요.</p>
+        <span class="go">시작!</span>
+      </a>
+
+      <a class="card" href="https://jindamtetrisnew.vercel.app/" style="animation-delay:.26s">
+        <div class="top">
+          <img class="icon" src="icons/tetris.png" alt="">
+          <div>
+            <h2 class="name">진담 HSK 테트리스</h2>
+            <div class="tags"><span class="tag hsk">HSK 4~6급</span><span class="tag">단어</span><span class="tag">블록</span></div>
+          </div>
+        </div>
+        <p class="desc">단어를 블록처럼 쌓고 짝꿍어휘로 터뜨려요.</p>
+        <span class="go">시작!</span>
+      </a>
+
+      <a class="card" href="https://jindamblockpuzzle.vercel.app/" style="animation-delay:.33s">
+        <div class="top">
+          <img class="icon" src="icons/puzzle.png" alt="">
+          <div>
+            <h2 class="name">HSK 블록퍼즐</h2>
+            <div class="tags"><span class="tag hsk">HSK</span><span class="tag">퀴즈</span><span class="tag">퍼즐</span></div>
+          </div>
+        </div>
+        <p class="desc">단어 퀴즈를 풀고 블록 퍼즐을 맞춰요.</p>
+        <span class="go">시작!</span>
+      </a>
+    </section>
+
+    <footer>
+      게임 기록은 지금 쓰는 기기에 저장돼요. 같은 기기·같은 브라우저로 들어오면 이어서 할 수 있어요.<br>
+      <b>© 2026 진담중국어</b> · 모든 게임과 자료의 저작권은 진담중국어에 있어요.
+    </footer>
+  </main>
+</body>
+</html>

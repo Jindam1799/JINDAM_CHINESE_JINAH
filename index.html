@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>진담 중국어 오락실</title>
-<meta name="description" content="진담 중국어 오락실 · 진담중국어 게임을 한곳에서 골라 하는 중국어 학습 게임 모음">
+<meta name="description" content="진담 중국어 오락실 · 진담중국어 덩어리훈련 게임을 한자·단어·문장 존에서 골라 해요">
 <meta name="theme-color" content="#fff6e6">
 <link rel="icon" href="icons/app-192.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -18,176 +18,185 @@
   :root {
     --ink: #2a1a1f;
     --paper: #fff9ef;
-    --cream: #fff1d6;
     --bg: #fff6e6;
     --gold: #f2c14e;
     --red: #e2504c;
     --jade: #2f9a7a;
     --mute: #7a6a62;
+    --s1: #5aa9e6; /* 부담 없는 인지 */
+    --s2: #2f9a7a; /* 덩어리 연결 */
+    --s3: #e08a2e; /* 나만의 문장 */
+    --s4: #e2504c; /* 1초 즉시반응 */
     --f: 'Jua', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
   }
   * { box-sizing: border-box; }
   html, body { margin: 0; }
   body {
-    min-height: 100vh;
-    background: var(--bg);
-    color: var(--ink);
-    font-family: var(--f);
-    -webkit-text-size-adjust: 100%;
+    min-height: 100vh; background: var(--bg); color: var(--ink); font-family: var(--f);
+    -webkit-text-size-adjust: 100%; overflow-x: hidden;
     padding: calc(16px + env(safe-area-inset-top)) calc(16px + env(safe-area-inset-right)) calc(28px + env(safe-area-inset-bottom)) calc(16px + env(safe-area-inset-left));
-    overflow-x: hidden;
   }
-  /* 배경: 흐릿하게 떠다니는 한자 */
-  .bg-hanzi { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
-  .bg-hanzi span {
-    position: absolute; font-size: 64px; color: var(--gold); opacity: .18;
-    font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif; font-weight: 700;
-    animation: drift 14s ease-in-out infinite;
-  }
-  @keyframes drift { 50% { transform: translateY(-14px) rotate(4deg); } }
-  @media (prefers-reduced-motion: reduce) { .bg-hanzi span, .card { animation: none !important; } }
+  button { font: inherit; color: inherit; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+  .ico { width: 1em; height: 1em; vertical-align: -0.14em; flex: none; }
+  main { max-width: 1080px; margin: 0 auto; }
 
-  main { position: relative; z-index: 1; max-width: 1040px; margin: 0 auto; }
-  header { text-align: center; margin: 8px 0 22px; }
-  .logo {
-    width: 76px; height: 76px; border-radius: 20px; border: 4px solid var(--ink);
-    box-shadow: 0 5px 0 var(--ink); image-rendering: pixelated; background: #fff;
-  }
-  h1 {
-    margin: 12px 0 4px; font-weight: 400; font-size: clamp(30px, 7vw, 46px); letter-spacing: -.5px;
-  }
+  header { text-align: center; margin: 4px 0 16px; }
+  .logo { width: 64px; height: 64px; border-radius: 18px; border: 4px solid var(--ink); box-shadow: 0 5px 0 var(--ink); image-rendering: pixelated; background: #fff; }
+  h1 { margin: 10px 0 2px; font-weight: 400; font-size: clamp(28px, 6.6vw, 44px); }
   h1 .zh { color: var(--red); }
-  .hello { margin: 0; color: var(--mute); font-size: clamp(16px, 3.6vw, 20px); }
+  .hello { margin: 0; color: var(--mute); font-size: clamp(15px, 3.4vw, 18px); }
+  .about-btn { margin-top: 6px; font-size: 14px; color: var(--mute); background: none; border: 0; text-decoration: underline; text-underline-offset: 3px; padding: 4px 8px; }
 
-  .grid {
-    display: grid; gap: 18px;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  /* 훈련 지도 배너 */
+  .map {
+    background: var(--paper); border: 4px solid var(--ink); border-radius: 18px; box-shadow: 0 6px 0 var(--ink);
+    padding: 12px 12px 10px; margin: 0 0 18px;
   }
+  .map-title { margin: 0 4px 8px; font-size: 16px; color: var(--mute); display: flex; justify-content: space-between; gap: 8px; flex-wrap: wrap; }
+  .map-title b { color: var(--ink); font-weight: 400; }
+  .steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; align-items: stretch; }
+  .step {
+    position: relative; display: flex; flex-direction: column; align-items: center; gap: 4px; text-align: center;
+    background: #fff; border: 3px solid var(--ink); border-radius: 14px; padding: 10px 6px 9px; line-height: 1.25;
+    box-shadow: 0 3px 0 var(--ink); transition: transform .1s;
+  }
+  .step:active { transform: translateY(3px); box-shadow: none; }
+  .step .n { font-size: 13px; color: var(--mute); }
+  .step .ic { width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; color: #fff; background: var(--c); border: 3px solid var(--ink); font-size: 18px; }
+  .step .t { font-size: 15.5px; }
+  .step.on { background: color-mix(in srgb, var(--c) 18%, #fff); outline: 3px solid var(--c); outline-offset: 2px; }
+  .step:not(:last-child)::after {
+    content: ''; position: absolute; right: -8px; top: 50%; width: 8px; height: 3px; background: var(--ink); z-index: 1;
+  }
+  .map-hint { margin: 8px 4px 0; font-size: 13.5px; color: var(--mute); text-align: center; }
+
+  /* 존(방) 메뉴 */
+  .rooms { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin: 0 0 12px; }
+  .room {
+    display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 9px 4px 8px;
+    background: #fff; border: 3px solid var(--ink); border-radius: 14px; box-shadow: 0 3px 0 var(--ink); font-size: 16px; line-height: 1.2;
+  }
+  .room .ri { font-size: 22px; color: var(--rc, var(--ink)); }
+  .room small { font-size: 12px; color: var(--mute); }
+  .room.on { background: var(--ink); color: #fff; }
+  .room.on .ri, .room.on small { color: #fff; }
+  .room:active { transform: translateY(3px); box-shadow: none; }
+
+  /* 필터 */
+  .filters { display: flex; flex-wrap: wrap; gap: 6px 8px; align-items: center; margin: 0 0 18px; }
+  .filters .lab { font-size: 14px; color: var(--mute); margin-right: 2px; }
+  .chip { font-size: 14.5px; padding: 4px 12px; border-radius: 999px; border: 2.5px solid var(--ink); background: #fff; }
+  .chip.on { background: var(--gold); }
+  .filters .sep { width: 1px; height: 22px; background: #d9c9b6; margin: 0 4px; }
+
+  /* 존 섹션 · 카드 */
+  .zone { margin: 0 0 26px; }
+  .zone-head { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin: 0 4px 14px; }
+  .zone-head .zi { width: 36px; height: 36px; border-radius: 10px; border: 3px solid var(--ink); display: grid; place-items: center; background: var(--zc); color: #fff; font-size: 19px; }
+  .zone-head h2 { margin: 0; font-weight: 400; font-size: 25px; }
+  .zone-head p { margin: 0; color: var(--mute); font-size: 15.5px; }
+  .grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fill, minmax(286px, 1fr)); }
   .card {
-    position: relative; display: flex; flex-direction: column; gap: 10px;
-    background: var(--paper); border: 4px solid var(--ink); border-radius: 18px;
-    box-shadow: 0 7px 0 var(--ink); padding: 18px 18px 16px;
-    color: inherit; text-decoration: none;
-    transition: transform .12s ease, box-shadow .12s ease;
-    animation: pop .5s ease both;
+    position: relative; display: flex; flex-direction: column; gap: 9px; background: var(--paper);
+    border: 4px solid var(--ink); border-radius: 18px; box-shadow: 0 7px 0 var(--ink); padding: 15px 16px 14px;
+    color: inherit; text-decoration: none; transition: transform .12s, box-shadow .12s; animation: pop .45s ease both;
     -webkit-tap-highlight-color: transparent;
   }
   .card:hover { transform: translateY(-3px); box-shadow: 0 10px 0 var(--ink); }
   .card:active { transform: translateY(5px); box-shadow: 0 2px 0 var(--ink); }
   .card:focus-visible { outline: 4px solid var(--jade); outline-offset: 4px; }
-  @keyframes pop { from { opacity: 0; transform: translateY(14px) scale(.97); } }
-  .card.star { background: #fff3c9; }
-  .top { display: flex; align-items: center; gap: 14px; }
-  .icon {
-    width: 72px; height: 72px; flex: none; border-radius: 16px; border: 3px solid var(--ink);
-    image-rendering: pixelated; background: #fff;
-  }
-  .name { margin: 0; font-weight: 400; font-size: 23px; line-height: 1.2; }
-  h3.name { font-size: 22px; }
-  .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
-  .tag {
-    font-size: 13px; padding: 2px 9px; border-radius: 999px; border: 2px solid var(--ink);
-    background: #fff;
-  }
-  .tag.kids { background: var(--gold); }
-  .tag.hsk { background: #d8f0e4; }
-  .desc { margin: 0; font-size: 16.5px; line-height: 1.45; color: #4a3a3f; min-height: 48px; }
-  .go {
-    align-self: stretch; text-align: center; margin-top: 2px;
-    background: var(--red); color: #fff; border: 3px solid var(--ink); border-radius: 12px;
-    box-shadow: 0 4px 0 var(--ink); padding: 9px 0; font-size: 20px;
-  }
-  .card.star .go { background: var(--jade); }
-  .badge {
-    position: absolute; top: -14px; right: 14px; background: var(--gold); border: 3px solid var(--ink);
-    border-radius: 10px; padding: 2px 10px; font-size: 14px; box-shadow: 0 3px 0 var(--ink);
-  }
-  .cats { display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; margin: -6px 0 22px; }
-  .cats a {
-    text-decoration: none; color: var(--ink); background: #fff; border: 3px solid var(--ink);
-    border-radius: 999px; padding: 6px 16px; font-size: 17px; box-shadow: 0 3px 0 var(--ink);
-  }
-  .cats a:active { transform: translateY(3px); box-shadow: none; }
-  .cat { margin: 0 0 30px; scroll-margin-top: 16px; }
-  .cat-head { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; margin: 0 4px 16px; }
-  .cat-head h2 { margin: 0; font-weight: 400; font-size: 26px; }
-  .cat-head h2::before {
-    content: ''; display: inline-block; width: 14px; height: 14px; border-radius: 4px; border: 3px solid var(--ink);
-    margin-right: 8px; vertical-align: 1px; background: var(--c, var(--gold));
-  }
-  .cat-head p { margin: 0; color: var(--mute); font-size: 16px; }
-  .about-btn {
-    margin-top: 10px; font: inherit; font-size: 15px; color: var(--mute); background: none;
-    border: 0; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; padding: 4px 8px;
-  }
-  /* 처음 들어올 때 안내 팝업 */
-  .intro {
-    position: fixed; inset: 0; z-index: 50; display: flex; align-items: center; justify-content: center;
-    padding: calc(16px + env(safe-area-inset-top)) 16px calc(16px + env(safe-area-inset-bottom));
-    background: rgba(42, 26, 31, .45);
-  }
+  @keyframes pop { from { opacity: 0; transform: translateY(12px) scale(.97); } }
+  .badges { display: flex; flex-wrap: wrap; gap: 6px; }
+  .badge { display: inline-flex; align-items: center; gap: 4px; font-size: 13.5px; padding: 3px 9px 3px 6px; border-radius: 999px; color: #fff; background: var(--c); border: 2px solid var(--ink); }
+  .badge.retry { background: #fff; color: var(--ink); }
+  .top { display: flex; align-items: center; gap: 12px; }
+  .icon { width: 64px; height: 64px; flex: none; border-radius: 14px; border: 3px solid var(--ink); background: #fff; }
+  .name { margin: 0; font-weight: 400; font-size: 21px; line-height: 1.2; }
+  .desc { margin: 0; font-size: 15.5px; line-height: 1.45; color: #4a3a3f; }
+  .meta { display: flex; flex-wrap: wrap; gap: 5px 6px; align-items: center; }
+  .tag { font-size: 13px; padding: 2px 8px; border-radius: 8px; background: #f3e9d8; color: #5a4a4f; }
+  .tag.exam { background: #d8f0e4; }
+  .time { margin-left: auto; font-size: 13.5px; color: var(--mute); display: inline-flex; align-items: center; gap: 3px; }
+  .go { text-align: center; background: var(--red); color: #fff; border: 3px solid var(--ink); border-radius: 12px; box-shadow: 0 4px 0 var(--ink); padding: 8px 0; font-size: 19px; }
+  .empty { padding: 14px; text-align: center; color: var(--mute); background: #fffdf8; border: 3px dashed #d9c9b6; border-radius: 14px; font-size: 15px; }
+
+  /* 수업존 잠금 */
+  .lock-box { display: flex; flex-direction: column; align-items: center; gap: 10px; text-align: center; background: #f3ece2; border: 4px dashed var(--ink); border-radius: 18px; padding: 18px 16px; }
+  .lock-box .big { font-size: 34px; }
+  .lock-box p { margin: 0; color: #4a3a3f; font-size: 15.5px; line-height: 1.5; }
+  .lock-row { display: flex; gap: 8px; width: min(320px, 100%); }
+  .lock-row input { flex: 1; min-width: 0; font: inherit; font-size: 17px; padding: 8px 10px; border: 3px solid var(--ink); border-radius: 10px; background: #fff; }
+  .lock-row button { background: var(--ink); color: #fff; border: 0; border-radius: 10px; padding: 0 14px; font-size: 16px; }
+  .lock-msg { min-height: 1.2em; font-size: 14px; color: var(--red); }
+
+  footer { margin-top: 26px; text-align: center; color: var(--mute); font-size: 13.5px; line-height: 1.7; }
+  footer b { color: var(--ink); font-weight: 400; }
+
+  /* 안내 팝업 */
+  .intro { position: fixed; inset: 0; z-index: 50; display: flex; align-items: center; justify-content: center; padding: calc(14px + env(safe-area-inset-top)) 14px calc(14px + env(safe-area-inset-bottom)); background: rgba(42, 26, 31, .45); }
   .intro[hidden] { display: none; }
-  .intro-box {
-    width: min(560px, 100%); max-height: 100%; overflow-y: auto; -webkit-overflow-scrolling: touch;
-    background: var(--paper); border: 4px solid var(--ink); border-radius: 20px; box-shadow: 0 8px 0 var(--ink);
-    padding: 22px 22px 18px; animation: pop .35s ease both;
-  }
-  .intro-box h2 { margin: 0 0 4px; font-weight: 400; font-size: 27px; text-align: center; }
+  .intro-box { width: min(560px, 100%); max-height: 100%; overflow-y: auto; -webkit-overflow-scrolling: touch; background: var(--paper); border: 4px solid var(--ink); border-radius: 20px; box-shadow: 0 8px 0 var(--ink); padding: 20px 20px 16px; animation: pop .35s ease both; }
+  .intro-box h2 { margin: 0 0 4px; font-weight: 400; font-size: 25px; text-align: center; }
   .intro-box h2 span { color: var(--red); }
-  .intro-box .lead { margin: 0 0 16px; text-align: center; color: var(--mute); font-size: 16px; }
-  .intro-sec { margin: 0 0 14px; padding: 12px 14px; border-radius: 14px; background: #fff; border: 3px solid var(--ink); }
-  .intro-sec h3 { margin: 0 0 6px; font-weight: 400; font-size: 19px; }
-  .intro-sec p, .intro-sec li { margin: 0; font-size: 16px; line-height: 1.55; color: #4a3a3f; }
+  .intro-box .lead { margin: 0 0 14px; text-align: center; color: var(--mute); font-size: 15px; }
+  .intro-sec { margin: 0 0 12px; padding: 11px 13px; border-radius: 14px; background: #fff; border: 3px solid var(--ink); }
+  .intro-sec h3 { margin: 0 0 5px; font-weight: 400; font-size: 18px; }
+  .intro-sec p, .intro-sec li { margin: 0; font-size: 15px; line-height: 1.55; color: #4a3a3f; }
   .intro-sec ul { margin: 4px 0 0; padding-left: 20px; }
   .intro-sec b { color: var(--ink); font-weight: 400; background: linear-gradient(transparent 60%, #ffe08a 60%); }
-  .intro-go {
-    display: block; width: 100%; margin-top: 6px; font: inherit; font-size: 21px; color: #fff;
-    background: var(--jade); border: 3px solid var(--ink); border-radius: 14px; box-shadow: 0 4px 0 var(--ink);
-    padding: 11px 0; cursor: pointer;
+  .intro-go { display: block; width: 100%; margin-top: 4px; font-size: 20px; color: #fff; background: var(--jade); border: 3px solid var(--ink); border-radius: 14px; box-shadow: 0 4px 0 var(--ink); padding: 10px 0; }
+
+  @media (max-width: 560px) {
+    .steps { grid-template-columns: repeat(2, 1fr); }
+    .step:nth-child(2)::after { display: none; }
+    .rooms { grid-template-columns: repeat(3, 1fr); }
+    .rooms .room:nth-child(n+4) { grid-column: span 1; }
+    .intro-box { padding: 16px 13px 13px; }
+    .intro-sec p, .intro-sec li { font-size: 14px; }
   }
-  .intro-go:active { transform: translateY(4px); box-shadow: none; }
-  @media (max-width: 480px) {
-    .intro-box { padding: 16px 14px 14px; }
-    .intro-box h2 { font-size: 23px; }
-    .intro-sec { padding: 10px 12px; margin-bottom: 10px; }
-    .intro-sec h3 { font-size: 17px; }
-    .intro-sec p, .intro-sec li { font-size: 14.5px; line-height: 1.5; }
-  }
-  footer { margin-top: 30px; text-align: center; color: var(--mute); font-size: 14px; line-height: 1.7; }
-  footer b { color: var(--ink); font-weight: 400; }
+  @media (prefers-reduced-motion: reduce) { .card, .intro-box { animation: none; } }
 </style>
 </head>
 <body>
-  <div class="bg-hanzi" aria-hidden="true">
-    <span style="left:4%;top:12%">中</span>
-    <span style="left:86%;top:8%;animation-delay:-3s">学</span>
-    <span style="left:12%;top:72%;animation-delay:-6s">玩</span>
-    <span style="left:80%;top:64%;animation-delay:-9s">好</span>
-    <span style="left:46%;top:88%;animation-delay:-2s">字</span>
-  </div>
+  <!-- 아이콘 (이모지 대신 직접 그린 그림) -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <symbol id="i-eye" viewBox="0 0 24 24"><path d="M1.5 12S5.5 4.5 12 4.5 22.5 12 22.5 12 18.5 19.5 12 19.5 1.5 12 1.5 12Z" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round"/><circle cx="12" cy="12" r="3.6" fill="currentColor"/></symbol>
+    <symbol id="i-link" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M10 14a4.5 4.5 0 0 0 6.4 0l3.2-3.2a4.5 4.5 0 0 0-6.4-6.4L11.7 6"/><path d="M14 10a4.5 4.5 0 0 0-6.4 0l-3.2 3.2a4.5 4.5 0 0 0 6.4 6.4l1.5-1.5"/></g></symbol>
+    <symbol id="i-pen" viewBox="0 0 24 24"><path d="M4 20l1.2-4.6L16.6 4a2.2 2.2 0 0 1 3.1 0l.3.3a2.2 2.2 0 0 1 0 3.1L8.6 18.8Z" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round"/><path d="M14.5 6.2l3.3 3.3" stroke="currentColor" stroke-width="2.4"/></symbol>
+    <symbol id="i-bolt" viewBox="0 0 24 24"><path d="M13.5 1.5 4 13.5h6.5L9.5 22.5 20 9.5h-6.6Z" fill="currentColor"/></symbol>
+    <symbol id="i-retry" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12a8 8 0 1 1-2.6-5.9"/><path d="M20 3.5v5h-5"/></g></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2.4"/><path d="M12 7v5.5l3.5 2" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></symbol>
+    <symbol id="i-lock" viewBox="0 0 24 24"><rect x="4.5" y="10.5" width="15" height="11" rx="2.5" fill="currentColor"/><path d="M8 10.5V7.5a4 4 0 0 1 8 0v3" fill="none" stroke="currentColor" stroke-width="2.6"/></symbol>
+    <symbol id="i-han" viewBox="0 0 24 24"><text x="12" y="18.5" text-anchor="middle" font-size="17" font-weight="700" fill="currentColor" font-family="PingFang SC,Microsoft YaHei,sans-serif">字</text></symbol>
+    <symbol id="i-word" viewBox="0 0 24 24"><path d="M3 7h5.5a2.5 2.5 0 1 1 5 0H19v5.5a2.5 2.5 0 1 1 0 5V21H3Z" fill="currentColor"/></symbol>
+    <symbol id="i-talk" viewBox="0 0 24 24"><path d="M4 4h16a1.5 1.5 0 0 1 1.5 1.5v10A1.5 1.5 0 0 1 20 17h-9l-5 4v-4H4a1.5 1.5 0 0 1-1.5-1.5v-10A1.5 1.5 0 0 1 4 4Z" fill="currentColor"/></symbol>
+    <symbol id="i-all" viewBox="0 0 24 24"><g fill="currentColor"><rect x="3" y="3" width="8" height="8" rx="2"/><rect x="13" y="3" width="8" height="8" rx="2"/><rect x="3" y="13" width="8" height="8" rx="2"/><rect x="13" y="13" width="8" height="8" rx="2"/></g></symbol>
+  </svg>
 
   <div class="intro" id="intro" role="dialog" aria-modal="true" aria-labelledby="intro-title" hidden>
     <div class="intro-box">
       <h2 id="intro-title">진담 중국어 <span>오락실</span>에 온 걸 환영해요!</h2>
       <p class="lead">진담중국어 게임을 한곳에 모아 둔 곳이에요</p>
       <div class="intro-sec">
-        <h3>어떤 게임이 있나요?</h3>
+        <h3>어떻게 찾나요?</h3>
         <ul>
-          <li><b>한자 익히기</b> · 한자어 탐정, 진담 한자어 놀이터, 진담한자톡, 진담 HSK4 한자톡</li>
-          <li><b>HSK 단어 게임</b> · 덩어리 숲속의 모험, 덩어리 숲, 진담점프, 진담 테트리스, 진담 블록퍼즐</li>
+          <li><b>존</b> · 무엇을 연습하나: 한자존 · 단어존 · 문장존 · 수업존</li>
+          <li><b>훈련 지도</b> · 어떻게 훈련하나: 맨 위 4단계를 누르면 그 단계 게임만 모아 봐요</li>
+          <li><b>꼬리표</b> · 누구·어떤 목표: HSK·TSC·초등·청소년·성인으로 골라 봐요</li>
         </ul>
       </div>
       <div class="intro-sec">
         <h3>왜 만들었나요?</h3>
-        <p>게임마다 주소가 따로라 찾기 어려웠어요. 이제 이 주소 하나만 기억하면 수업에서 배운 한자어·단어를 원하는 게임으로 골라 놀면서 익힐 수 있어요. 새 게임이 생기면 여기에 계속 추가돼요.</p>
+        <p>게임마다 주소가 따로라 찾기 어려웠어요. 이제 이 주소 하나에서 진담중국어 덩어리훈련 4단계 — 부담 없이 보고, 덩어리로 연결하고, 내 문장으로 만들고, 1초 안에 툭! — 에 맞는 게임을 골라 할 수 있어요. 새 게임은 계속 추가돼요.</p>
       </div>
       <div class="intro-sec">
         <h3>원래 하던 게임 기록은요?</h3>
-        <p>그대로예요! 오락실은 각 게임의 <b>원래 주소로 연결</b>만 해 줘요. 같은 기기·같은 브라우저라면 별·엽전·진행 기록이 그대로 이어지고, 원래 주소로 바로 들어가도 괜찮아요. (기록은 기기에 저장돼서, 다른 기기로 바꾸면 새로 시작해요)</p>
+        <p>그대로예요! 오락실은 각 게임의 <b>원래 주소로 연결</b>만 해 줘요. 같은 기기·같은 브라우저라면 기록이 그대로 이어지고, 원래 주소로 바로 들어가도 괜찮아요. 홈 화면 아이콘이나 카카오톡으로 하던 게임은 그 방법 그대로 들어가거나, 게임 안 <b>기록 옮기기</b>로 옮겨 주세요.</p>
       </div>
       <button class="intro-go" type="button" id="intro-go">오락실 들어가기</button>
     </div>
   </div>
+
   <main>
     <header>
       <img class="logo" src="icons/app-192.png" alt="">
@@ -196,10 +205,13 @@
       <button class="about-btn" type="button" id="about-open">오락실 안내 보기</button>
     </header>
 
-    <nav class="cats" aria-label="종류">
-      <a href="#write">한자 익히기</a>
-      <a href="#hsk">HSK 단어 게임</a>
-    </nav>
+    <section class="map" aria-label="훈련 지도">
+      <p class="map-title"><b>진담중국어 덩어리훈련 지도</b><span>단계를 누르면 그 단계 게임만 보여요</span></p>
+      <div class="steps" id="steps"></div>
+    </section>
+
+    <nav class="rooms" id="rooms" aria-label="존 고르기"></nav>
+    <div class="filters" id="filters"></div>
 
     <div id="games"></div>
 
@@ -208,41 +220,157 @@
       <b>© 2026 진담중국어</b> · 모든 게임과 자료의 저작권은 진담중국어에 있어요.
     </footer>
   </main>
+
 <script>
-  // 게임 목록: 새 게임은 여기 한 줄만 추가하면 돼요 (아이콘은 icons/ 폴더에)
-  var CATS = [
-    { id: 'write', name: '한자 익히기', note: '한자어를 쪼개 보고, 찾아보고, 획순대로 따라 쓰며 한자를 익혀요', color: '#e2504c', games: [
-      { name: '한자어 탐정', url: 'https://jindamdetectivestudent.vercel.app/', icon: 'detective', tags: ['초등 저학년', '한자어', '탐정'], desc: '우리말 속 한자를 찾으면 중국어가 툭! 사건을 풀고 도장을 모아요.' },
-      { name: '진담 한자어 놀이터', url: 'https://jindamhanzistudyfor-students.vercel.app/', icon: 'hanzistudy', tags: ['초등', '교과서 한자어', '매주 새로'], desc: '교과서 속 한자어를 쪼개 보고, 따라 쓰고, 중국어 소리까지 들어요.' },
-      { name: '진담한자톡', url: 'https://jindamhanzitalk.vercel.app/', icon: 'hanzitalk', tags: ['부수', '한자 쓰기'], desc: '부수로 배우는 한자 쓰기 게임이에요.' },
-      { name: '진담 HSK4 한자톡', url: 'https://jindamhanzitalkhsk4.vercel.app/', icon: 'hanzitalk4', tags: ['HSK 4급', '필수 어휘 1000', '쓰기'], desc: 'HSK 4급 필수 어휘를 직접 써 보며 익혀요.' },
-    ] },
-    { id: 'hsk', name: 'HSK 단어 게임', note: '짝꿍어휘와 HSK 단어로 모험하고 퍼즐을 풀어요', color: '#2f9a7a', games: [
-      { name: '덩어리 숲속의 모험', url: 'https://jindamchineseadventure.vercel.app/', icon: 'adventure', tags: ['HSK 4급', '짝꿍어휘', '모험'], desc: '진담이와 숲을 탐험하며 짝꿍어휘를 모으고 숲의 보스를 물리쳐요.' },
-      { name: '덩어리 숲', url: 'https://jindam1799.github.io/jindam_forest_student_hsk3.0/', icon: 'forest', tags: ['HSK 3.0', '짝꿍어휘', '캐릭터 키우기'], desc: 'HSK 단어와 짝꿍어휘를 익히며 나만의 캐릭터를 키워요.' },
-      { name: '진담점프', url: 'https://jindamjump.vercel.app/', icon: 'jump', tags: ['HSK', '듣기', '점프'], desc: '용암을 피해 위로 점프! 중국어를 듣고 뜻을 골라요.' },
-      { name: '진담 테트리스', url: 'https://jindamtetrisnew.vercel.app/', icon: 'tetris', tags: ['HSK 4~6급', '단어', '블록'], desc: '단어를 블록처럼 쌓고 짝꿍어휘로 터뜨려요.' },
-      { name: '진담 블록퍼즐', url: 'https://jindamblockpuzzle.vercel.app/', icon: 'puzzle', tags: ['HSK', '퀴즈', '퍼즐'], desc: '단어 퀴즈를 풀고 블록 퍼즐을 맞춰요.' },
-    ] },
+  // ===== 덩어리훈련 4단계 (배지) =====
+  var STEPS = [
+    { id: 'see', n: '①', name: '부담 없는 인지', short: '보고', icon: 'eye', color: 'var(--s1)' },
+    { id: 'link', n: '②', name: '덩어리 연결·입에 붙이기', short: '연결', icon: 'link', color: 'var(--s2)' },
+    { id: 'mine', n: '③', name: '나만의 문장', short: '내 문장', icon: 'pen', color: 'var(--s3)' },
+    { id: 'tuk', n: '④', name: '1초 즉시반응', short: '1초 툭!', icon: 'bolt', color: 'var(--s4)' },
   ];
-  (function () {
-    function esc(t) { var d = document.createElement('div'); d.textContent = t; return d.innerHTML; }
+  // ===== 존 =====
+  var ZONES = [
+    { id: 'han', name: '한자존', note: '한자와 우리말 한자어를 부담 없이 만나요', icon: 'han', color: '#5aa9e6' },
+    { id: 'word', name: '단어존', note: '짝꿍어휘로 단어를 덩어리로 연결해요', icon: 'word', color: '#2f9a7a' },
+    { id: 'sent', name: '문장존', note: '덩어리 연결부터 1초 툭! 반응까지', icon: 'talk', color: '#e08a2e' },
+    { id: 'class', name: '수업존', note: '수업 복습용 게임 · 선생님이 개별로 알려 줘요', icon: 'lock', color: '#7a6a62', locked: true },
+  ];
+  // ===== 게임 목록 (새 게임은 여기에 한 줄 추가 · 아이콘은 icons/ 폴더) =====
+  // steps: 단계 배지 최대 2개 · retry: 오답 다시 도전 모드 · who: 초등/청소년/성인 · exam: 'HSK 4급' 'TSC' 등 · topic: 주제 · min: 소요시간(분)
+  var GAMES = [
+    { zone: 'han', name: '한자어 탐정', url: 'https://jindamdetectivestudent.vercel.app/', icon: 'detective', steps: ['see'], retry: false, who: ['초등'], exam: [], topic: ['초등 한자어'], min: 10, desc: '우리말 속 한자를 찾으면 중국어가 툭! 사건을 풀고 도장을 모아요.' },
+    { zone: 'han', name: '진담 한자어 놀이터', url: 'https://jindamhanzistudyfor-students.vercel.app/', icon: 'hanzistudy', steps: ['see', 'link'], retry: true, who: ['초등'], exam: [], topic: ['교과서 한자어'], min: 10, desc: '교과서 속 한자어를 쪼개 보고, 따라 쓰고, 중국어 소리까지 들어요.' },
+    { zone: 'han', name: '진담한자톡', url: 'https://jindamhanzitalk.vercel.app/', icon: 'hanzitalk', steps: ['see'], retry: false, who: ['초등', '청소년'], exam: [], topic: ['부수', '한자 쓰기'], min: 5, desc: '부수로 배우는 한자 쓰기 게임이에요.' },
+    { zone: 'han', name: '진담 HSK4 한자톡', url: 'https://jindamhanzitalkhsk4.vercel.app/', icon: 'hanzitalk4', steps: ['see'], retry: false, who: ['청소년', '성인'], exam: ['HSK 4급'], topic: ['한자 쓰기'], min: 5, desc: 'HSK 4급 필수 어휘를 직접 써 보며 익혀요.' },
+    { zone: 'word', name: '덩어리 숲', url: 'https://jindam1799.github.io/jindam_forest_student_hsk3.0/', icon: 'forest', steps: ['link'], retry: true, who: ['청소년', '성인'], exam: ['HSK 1~5급'], topic: ['캐릭터 키우기'], min: 5, desc: 'HSK 단어와 짝꿍어휘를 익히며 나만의 식물 친구를 키워요.' },
+    { zone: 'word', name: '덩어리 숲속의 모험', url: 'https://jindamchineseadventure.vercel.app/', icon: 'adventure', steps: ['link', 'see'], retry: true, who: ['초등', '청소년'], exam: ['HSK 4급'], topic: ['모험'], min: 10, desc: '진담이와 숲을 탐험하며 짝꿍어휘를 모으고 덩어리를 조립해요.' },
+    { zone: 'word', name: '진담 테트리스', url: 'https://jindamtetrisnew.vercel.app/', icon: 'tetris', steps: ['link', 'tuk'], retry: true, who: ['청소년', '성인'], exam: ['HSK 4~6급'], topic: ['블록'], min: 10, desc: '단어를 블록처럼 쌓고 짝꿍어휘로 터뜨려요.' },
+    { zone: 'word', name: '진담 블록퍼즐', url: 'https://jindamblockpuzzle.vercel.app/', icon: 'puzzle', steps: ['link'], retry: false, who: ['청소년', '성인'], exam: ['HSK'], topic: ['퍼즐'], min: 10, desc: '단어 퀴즈를 풀고 블록 퍼즐을 맞춰요.' },
+    { zone: 'word', name: '진담점프', url: 'https://jindamjump.vercel.app/', icon: 'jump', steps: ['tuk', 'see'], retry: false, who: ['청소년', '성인'], exam: ['HSK 4급'], topic: ['듣기'], min: 5, desc: '용암을 피해 위로 점프! 중국어를 듣고 재빨리 뜻을 골라요.' },
+    { zone: 'sent', name: '速成 덩어리 툭!', url: 'https://jindam1799.github.io/jindam_sucheng_tuk/', icon: 'sucheng', steps: ['tuk', 'mine'], retry: true, who: ['초등', '청소년'], exam: [], topic: ['회화', '汉语口语速成'], min: 10, desc: '교재 16~30과 표현을 덩어리로 익히고 1초 안에 툭! 말해요.' },
+    { zone: 'sent', name: '덩어리 툭 고급회화', url: 'https://jindam1799.github.io/jindam_gogeup/', icon: 'gogeup', steps: ['mine', 'tuk'], retry: true, who: ['성인'], exam: [], topic: ['고급회화'], min: 10, desc: '고급반 교재 표현으로 내 문장을 만들고 바로 반응해요.' },
+    // 수업존 (잠금): 수업 복습용 · 개별 제공
+    { zone: 'class', name: '덩어리 숲속의 모험(그랑힐스)', url: 'https://jindamchineseadventure.vercel.app/kids', icon: 'adventure', steps: ['see', 'link'], retry: true, who: ['초등'], exam: [], topic: ['초등 한자어'], min: 10, desc: '그랑힐스 수업에서 배운 한자어로 대나무숲을 달려요.' },
+  ];
+  // 수업존 비밀번호 (선생님만): sha-256('jindam:비밀번호')
+  var CLASS_HASH = '8e8848372d54316e6ed201c3bbfec0bcd076198268853df1fbb79e5601eecf21';
+
+  var state = { room: 'all', step: null, exam: null, who: null };
+  var unlocked = false;
+  try { unlocked = localStorage.getItem('jindam-arcade-class') === '1'; } catch (e) {}
+
+  function esc(t) { var d = document.createElement('div'); d.textContent = t; return d.innerHTML; }
+  function ic(name) { return '<svg class="ico"><use href="#i-' + name + '"></use></svg>'; }
+  function stepOf(id) { for (var i = 0; i < STEPS.length; i++) if (STEPS[i].id === id) return STEPS[i]; }
+
+  function renderSteps() {
+    document.getElementById('steps').innerHTML = STEPS.map(function (s) {
+      return '<button type="button" class="step' + (state.step === s.id ? ' on' : '') + '" data-step="' + s.id + '" style="--c:' + s.color + '" aria-pressed="' + (state.step === s.id) + '">' +
+        '<span class="ic">' + ic(s.icon) + '</span><span class="n">' + s.n + '</span><span class="t">' + esc(s.name) + '</span></button>';
+    }).join('');
+  }
+  function renderRooms() {
+    var list = [{ id: 'all', name: '전체', icon: 'all', note: '모든 존' }].concat(ZONES);
+    document.getElementById('rooms').innerHTML = list.map(function (z) {
+      var cnt = z.id === 'all' ? GAMES.filter(function (g) { return g.zone !== 'class'; }).length : GAMES.filter(function (g) { return g.zone === z.id; }).length;
+      return '<button type="button" class="room' + (state.room === z.id ? ' on' : '') + '" data-room="' + z.id + '" style="--rc:' + (z.color || 'var(--ink)') + '"><span class="ri">' + ic(z.icon) + '</span>' + esc(z.name) + '<small>' + (z.locked ? '잠금' : cnt + '개') + '</small></button>';
+    }).join('');
+  }
+  function renderFilters() {
+    var exams = [['HSK', 'HSK만'], ['TSC', 'TSC만']];
+    var whos = ['초등', '청소년', '성인'];
+    var h = '<span class="lab">시험</span>';
+    h += exams.map(function (x) { return '<button type="button" class="chip' + (state.exam === x[0] ? ' on' : '') + '" data-exam="' + x[0] + '">' + x[1] + '</button>'; }).join('');
+    h += '<span class="sep"></span><span class="lab">대상</span>';
+    h += whos.map(function (w) { return '<button type="button" class="chip' + (state.who === w ? ' on' : '') + '" data-who="' + w + '">' + w + '</button>'; }).join('');
+    if (state.step || state.exam || state.who) h += '<button type="button" class="chip" data-reset="1">모두 보기</button>';
+    document.getElementById('filters').innerHTML = h;
+  }
+  function pass(g) {
+    if (state.step && g.steps.indexOf(state.step) < 0) return false;
+    if (state.exam && !g.exam.some(function (x) { return x.indexOf(state.exam) === 0; })) return false;
+    if (state.who && g.who.indexOf(state.who) < 0) return false;
+    return true;
+  }
+  function card(g, n) {
+    var badges = g.steps.slice(0, 2).map(function (id) {
+      var s = stepOf(id);
+      return '<span class="badge" style="--c:' + s.color + '">' + ic(s.icon) + esc(s.short) + '</span>';
+    }).join('') + (g.retry ? '<span class="badge retry">' + ic('retry') + '다시 도전</span>' : '');
+    var tags = g.exam.map(function (x) { return '<span class="tag exam">#' + esc(x) + '</span>'; }).join('') +
+      g.who.map(function (x) { return '<span class="tag">#' + esc(x) + '</span>'; }).join('') +
+      g.topic.map(function (x) { return '<span class="tag">#' + esc(x) + '</span>'; }).join('');
+    return '<a class="card" href="' + g.url + '" style="animation-delay:' + (0.035 * n).toFixed(2) + 's">' +
+      '<div class="badges">' + badges + '</div>' +
+      '<div class="top"><img class="icon" src="icons/' + g.icon + '.png" alt=""><div><h3 class="name">' + esc(g.name) + '</h3></div></div>' +
+      '<p class="desc">' + esc(g.desc) + '</p>' +
+      '<div class="meta">' + tags + '<span class="time">' + ic('clock') + g.min + '분</span></div>' +
+      '<span class="go">시작!</span></a>';
+  }
+  function renderGames() {
     var html = '';
     var n = 0;
-    CATS.forEach(function (c) {
-      html += '<section class="cat" id="' + c.id + '" style="--c:' + c.color + '"><div class="cat-head"><h2>' + esc(c.name) + '</h2><p>' + esc(c.note) + '</p></div><div class="grid">';
-      c.games.forEach(function (g) {
-        var tags = g.tags.map(function (t, i) { return '<span class="tag' + (i === 0 ? (c.id === 'write' ? ' kids' : ' hsk') : '') + '">' + esc(t) + '</span>'; }).join('');
-        html += '<a class="card' + (g.star ? ' star' : '') + '" href="' + g.url + '" style="animation-delay:' + (0.04 * n++).toFixed(2) + 's">' +
-          (g.star ? '<span class="badge">' + esc(g.star) + '</span>' : '') +
-          '<div class="top"><img class="icon" src="icons/' + g.icon + '.png" alt=""><div><h3 class="name">' + esc(g.name) + '</h3><div class="tags">' + tags + '</div></div></div>' +
-          '<p class="desc">' + esc(g.desc) + '</p><span class="go">시작!</span></a>';
-      });
-      html += '</div></section>';
+    ZONES.forEach(function (z) {
+      if (state.room !== 'all' && state.room !== z.id) return;
+      if (state.room === 'all' && z.locked) return; // 수업존은 따로 눌러서
+      var list = GAMES.filter(function (g) { return g.zone === z.id; });
+      html += '<section class="zone" id="z-' + z.id + '"><div class="zone-head"><span class="zi" style="--zc:' + z.color + '">' + ic(z.icon) + '</span><h2>' + esc(z.name) + '</h2><p>' + esc(z.note) + '</p></div>';
+      if (z.locked && !unlocked) {
+        html += '<div class="lock-box"><span class="big">' + ic('lock') + '</span><p>수업존에는 수업 복습용 게임이 있어요.<br>선생님이 알려 준 개별 링크로 들어가거나, 수업 비밀번호를 넣어 주세요.</p>' +
+          '<form class="lock-row" id="lock-form"><input type="password" inputmode="numeric" autocomplete="off" id="lock-in" placeholder="수업 비밀번호" aria-label="수업 비밀번호"><button type="submit">열기</button></form><span class="lock-msg" id="lock-msg"></span></div>';
+      } else {
+        var shown = list.filter(pass);
+        html += shown.length ? '<div class="grid">' + shown.map(function (g) { return card(g, n++); }).join('') + '</div>' : '<div class="empty">조건에 맞는 게임이 아직 없어요</div>';
+      }
+      html += '</section>';
     });
     document.getElementById('games').innerHTML = html;
-  })();
-  // 처음 들어올 때만 안내 팝업 (다시 보기 버튼으로 언제든)
+    var f = document.getElementById('lock-form');
+    if (f) f.addEventListener('submit', tryUnlock);
+  }
+  function renderAll() { renderSteps(); renderRooms(); renderFilters(); renderGames(); }
+
+  function sha256(text) {
+    if (!window.crypto || !crypto.subtle) return Promise.resolve('');
+    return crypto.subtle.digest('SHA-256', new TextEncoder().encode(text)).then(function (b) {
+      return Array.prototype.map.call(new Uint8Array(b), function (x) { return ('0' + x.toString(16)).slice(-2); }).join('');
+    });
+  }
+  function tryUnlock(e) {
+    e.preventDefault();
+    var v = (document.getElementById('lock-in').value || '').trim();
+    sha256('jindam:' + v).then(function (h) {
+      if (h === CLASS_HASH) {
+        unlocked = true;
+        try { localStorage.setItem('jindam-arcade-class', '1'); } catch (er) {}
+        renderGames();
+      } else document.getElementById('lock-msg').textContent = '비밀번호가 달라요. 선생님께 물어봐 주세요.';
+    });
+  }
+
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest('button');
+    if (!b) return;
+    if (b.dataset.step) state.step = state.step === b.dataset.step ? null : b.dataset.step;
+    else if (b.dataset.room) state.room = b.dataset.room;
+    else if (b.dataset.exam) state.exam = state.exam === b.dataset.exam ? null : b.dataset.exam;
+    else if (b.dataset.who) state.who = state.who === b.dataset.who ? null : b.dataset.who;
+    else if (b.dataset.reset) { state.step = state.exam = state.who = null; }
+    else return;
+    if (b.dataset.step && state.room === 'class') state.room = 'all';
+    renderAll();
+  });
+
+  // 개별 링크: ?room=class 로 들어오면 수업존을 바로 보여 줌 (비밀번호는 그대로)
+  try {
+    var q = new URLSearchParams(location.search);
+    var r = q.get('room');
+    if (r && (r === 'all' || ZONES.some(function (z) { return z.id === r; }))) state.room = r;
+  } catch (e) {}
+  renderAll();
+
+  // 처음 들어올 때만 안내 팝업
   (function () {
     var box = document.getElementById('intro');
     function show() {
@@ -252,12 +380,9 @@
       try { document.getElementById('intro-go').focus({ preventScroll: true }); } catch (e) {}
       inner.scrollTop = 0;
     }
-    function hide() {
-      box.hidden = true;
-      try { localStorage.setItem('jindam-arcade-intro', '1'); } catch (e) {}
-    }
+    function hide() { box.hidden = true; try { localStorage.setItem('jindam-arcade-intro2', '1'); } catch (e) {} }
     var seen = false;
-    try { seen = localStorage.getItem('jindam-arcade-intro') === '1'; } catch (e) {}
+    try { seen = localStorage.getItem('jindam-arcade-intro2') === '1'; } catch (e) {}
     if (!seen) show();
     document.getElementById('intro-go').addEventListener('click', hide);
     document.getElementById('about-open').addEventListener('click', show);

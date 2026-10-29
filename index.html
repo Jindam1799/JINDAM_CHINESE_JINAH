@@ -40,52 +40,50 @@
   .ico { width: 1em; height: 1em; vertical-align: -0.14em; flex: none; }
   main { max-width: 1080px; margin: 0 auto; }
 
-  header { text-align: center; margin: 4px 0 16px; }
-  .logo { width: 64px; height: 64px; border-radius: 18px; border: 4px solid var(--ink); box-shadow: 0 5px 0 var(--ink); image-rendering: pixelated; background: #fff; }
-  h1 { margin: 10px 0 2px; font-weight: 400; font-size: clamp(28px, 6.6vw, 44px); }
+  header { display: grid; grid-template-columns: auto 1fr; column-gap: 12px; align-items: center; margin: 0 0 12px; }
+  header > div { min-width: 0; }
+  .logo { width: 48px; height: 48px; border-radius: 14px; border: 3px solid var(--ink); box-shadow: 0 3px 0 var(--ink); image-rendering: pixelated; background: #fff; }
+  h1 { margin: 0; font-weight: 400; font-size: clamp(23px, 5.6vw, 34px); line-height: 1.15; }
   h1 .zh { color: var(--red); }
-  .hello { margin: 0; color: var(--mute); font-size: clamp(15px, 3.4vw, 18px); }
-  .about-btn { margin-top: 6px; font-size: 14px; color: var(--mute); background: none; border: 0; text-decoration: underline; text-underline-offset: 3px; padding: 4px 8px; }
+  .hello { margin: 0; color: var(--mute); font-size: clamp(13px, 3.2vw, 15.5px); }
+  .about-btn { white-space: nowrap; margin: 0 0 0 4px; font-size: 13px; color: var(--mute); background: none; border: 0; text-decoration: underline; text-underline-offset: 3px; padding: 4px 8px; }
 
-  /* 훈련 지도 배너 */
+  /* 훈련 지도 (한 줄) */
   .map {
-    background: var(--paper); border: 4px solid var(--ink); border-radius: 18px; box-shadow: 0 6px 0 var(--ink);
-    padding: 12px 12px 10px; margin: 0 0 18px;
+    background: var(--paper); border: 3px solid var(--ink); border-radius: 14px; box-shadow: 0 3px 0 var(--ink);
+    padding: 7px 8px 8px; margin: 0 0 10px;
   }
-  .map-title { margin: 0 4px 8px; font-size: 16px; color: var(--mute); display: flex; justify-content: space-between; gap: 8px; flex-wrap: wrap; }
+  .map-title { margin: 0 2px 6px; font-size: 13.5px; color: var(--mute); display: flex; justify-content: space-between; gap: 6px; flex-wrap: wrap; }
   .map-title b { color: var(--ink); font-weight: 400; }
-  .steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; align-items: stretch; }
+  .steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
   .step {
-    position: relative; display: flex; flex-direction: column; align-items: center; gap: 4px; text-align: center;
-    background: #fff; border: 3px solid var(--ink); border-radius: 14px; padding: 10px 6px 9px; line-height: 1.25;
-    box-shadow: 0 3px 0 var(--ink); transition: transform .1s;
+    position: relative; display: flex; align-items: center; justify-content: center; gap: 5px; min-width: 0;
+    background: #fff; border: 2.5px solid var(--ink); border-radius: 999px; padding: 4px 6px; line-height: 1.15; font-size: 14px;
   }
-  .step:active { transform: translateY(3px); box-shadow: none; }
-  .step .n { font-size: 13px; color: var(--mute); }
-  .step .ic { width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; color: #fff; background: var(--c); border: 3px solid var(--ink); font-size: 18px; }
-  .step .t { font-size: 15.5px; }
-  .step.on { background: color-mix(in srgb, var(--c) 18%, #fff); outline: 3px solid var(--c); outline-offset: 2px; }
-  .step:not(:last-child)::after {
-    content: ''; position: absolute; right: -8px; top: 50%; width: 8px; height: 3px; background: var(--ink); z-index: 1;
-  }
-  .map-hint { margin: 8px 4px 0; font-size: 13.5px; color: var(--mute); text-align: center; }
+  .step:active { transform: translateY(2px); }
+  .step .ic { width: 22px; height: 22px; border-radius: 50%; display: grid; place-items: center; color: #fff; background: var(--c); border: 2px solid var(--ink); font-size: 12px; flex: none; }
+  .step .t, .step .s { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .step .s { display: none; }
+  .step.on { background: color-mix(in srgb, var(--c) 22%, #fff); outline: 2.5px solid var(--c); outline-offset: 1px; }
 
-  /* 존(방) 메뉴 */
-  .rooms { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin: 0 0 12px; }
+  /* 존 메뉴 (한 줄 탭) */
+  .rooms { display: flex; gap: 6px; margin: 0 0 8px; overflow-x: auto; scrollbar-width: none; padding: 2px 1px 4px; }
+  .rooms::-webkit-scrollbar { display: none; }
   .room {
-    display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 9px 4px 8px;
-    background: #fff; border: 3px solid var(--ink); border-radius: 14px; box-shadow: 0 3px 0 var(--ink); font-size: 16px; line-height: 1.2;
+    flex: 1 0 auto; display: flex; align-items: center; justify-content: center; gap: 5px; padding: 5px 12px;
+    background: #fff; border: 2.5px solid var(--ink); border-radius: 999px; box-shadow: 0 2px 0 var(--ink); font-size: 15px; line-height: 1.2; white-space: nowrap;
   }
-  .room .ri { font-size: 22px; color: var(--rc, var(--ink)); }
+  .room .ri { font-size: 16px; color: var(--rc, var(--ink)); }
   .room small { font-size: 12px; color: var(--mute); }
   .room.on { background: var(--ink); color: #fff; }
   .room.on .ri, .room.on small { color: #fff; }
-  .room:active { transform: translateY(3px); box-shadow: none; }
+  .room:active { transform: translateY(2px); box-shadow: none; }
 
   /* 필터 */
-  .filters { display: flex; flex-wrap: wrap; gap: 6px 8px; align-items: center; margin: 0 0 18px; }
-  .filters .lab { font-size: 14px; color: var(--mute); margin-right: 2px; }
-  .chip { font-size: 14.5px; padding: 4px 12px; border-radius: 999px; border: 2.5px solid var(--ink); background: #fff; }
+  .filters { display: flex; gap: 6px; align-items: center; margin: 0 0 14px; overflow-x: auto; scrollbar-width: none; white-space: nowrap; padding-bottom: 2px; }
+  .filters::-webkit-scrollbar { display: none; }
+  .filters .lab { font-size: 13px; flex: none; color: var(--mute); margin-right: 2px; }
+  .chip { flex: none; font-size: 13.5px; padding: 3px 10px; border-radius: 999px; border: 2.5px solid var(--ink); background: #fff; }
   .chip.on { background: var(--gold); }
   .filters .sep { width: 1px; height: 22px; background: #d9c9b6; margin: 0 4px; }
 
@@ -147,10 +145,14 @@
   .intro-go { display: block; width: 100%; margin-top: 4px; font-size: 20px; color: #fff; background: var(--jade); border: 3px solid var(--ink); border-radius: 14px; box-shadow: 0 4px 0 var(--ink); padding: 10px 0; }
 
   @media (max-width: 560px) {
-    .steps { grid-template-columns: repeat(2, 1fr); }
-    .step:nth-child(2)::after { display: none; }
-    .rooms { grid-template-columns: repeat(3, 1fr); }
-    .rooms .room:nth-child(n+4) { grid-column: span 1; }
+    .step { padding: 3px 3px; gap: 3px; font-size: 13px; }
+    .step .ic { width: 19px; height: 19px; font-size: 10px; }
+    .hello { font-size: 12.5px; }
+    .about-btn { font-size: 12px; padding: 2px 4px; }
+    .step .t { display: none; }
+    .step .s { display: inline; }
+    .room { padding: 5px 10px; font-size: 14px; }
+    .map-title span { display: none; }
     .intro-box { padding: 16px 13px 13px; }
     .intro-sec p, .intro-sec li { font-size: 14px; }
   }
@@ -200,9 +202,10 @@
   <main>
     <header>
       <img class="logo" src="icons/app-192.png" alt="">
-      <h1>진담 중국어 <span class="zh">오락실</span></h1>
-      <p class="hello">오늘은 어떤 게임으로 중국어를 만나 볼까?</p>
-      <button class="about-btn" type="button" id="about-open">오락실 안내 보기</button>
+      <div>
+        <h1>진담 중국어 <span class="zh">오락실</span></h1>
+        <p class="hello">오늘은 어떤 게임으로 중국어를 만나 볼까?<button class="about-btn" type="button" id="about-open">안내 보기</button></p>
+      </div>
     </header>
 
     <section class="map" aria-label="훈련 지도">
@@ -269,14 +272,14 @@
   function renderSteps() {
     document.getElementById('steps').innerHTML = STEPS.map(function (s) {
       return '<button type="button" class="step' + (state.step === s.id ? ' on' : '') + '" data-step="' + s.id + '" style="--c:' + s.color + '" aria-pressed="' + (state.step === s.id) + '">' +
-        '<span class="ic">' + ic(s.icon) + '</span><span class="n">' + s.n + '</span><span class="t">' + esc(s.name) + '</span></button>';
+        '<span class="ic">' + ic(s.icon) + '</span><span class="t">' + esc(s.name) + '</span><span class="s">' + esc(s.short) + '</span></button>';
     }).join('');
   }
   function renderRooms() {
     var list = [{ id: 'all', name: '전체', icon: 'all', note: '모든 존' }].concat(ZONES);
     document.getElementById('rooms').innerHTML = list.map(function (z) {
       var cnt = z.id === 'all' ? GAMES.filter(function (g) { return g.zone !== 'class'; }).length : GAMES.filter(function (g) { return g.zone === z.id; }).length;
-      return '<button type="button" class="room' + (state.room === z.id ? ' on' : '') + '" data-room="' + z.id + '" style="--rc:' + (z.color || 'var(--ink)') + '"><span class="ri">' + ic(z.icon) + '</span>' + esc(z.name) + '<small>' + (z.locked ? '잠금' : cnt + '개') + '</small></button>';
+      return '<button type="button" class="room' + (state.room === z.id ? ' on' : '') + '" data-room="' + z.id + '" style="--rc:' + (z.color || 'var(--ink)') + '"><span class="ri">' + ic(z.icon) + '</span>' + esc(z.name) + ' <small>' + (z.locked ? '잠금' : cnt + '개') + '</small></button>';
     }).join('');
   }
   function renderFilters() {

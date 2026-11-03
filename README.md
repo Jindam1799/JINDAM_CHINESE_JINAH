@@ -7,9 +7,11 @@
 - 분류(「진담오락실 분류 구조 기획」 2026-10-28): 존(한자·단어·문장) / 덩어리훈련 4단계 배지(보고·연결·내 문장·1초 툭!, 게임당 최대 2개) / 꼬리표(시험·대상·주제) + 소요시간 / 다시 도전 표시
 - 새 게임 추가: `index.html` 아래쪽 `GAMES` 목록에 한 줄(zone·name·url·icon·steps·retry·who·exam·topic·min·desc), 아이콘은 `icons/`
 
-## 그랑힐스 전용 오락실 `/grandhills/`
-- 주소: https://jindam1799.github.io/JINDAM_CHINESE_JINAH/grandhills/ (비밀번호 없음, 반에만 따로 알려 줌)
-- 게임 3개: 덩어리 숲속의 모험(/kids) · 블록퍼즐(/grandhills/) · 진담점프(/granhills/)
-- `python3 tools/make_grandhills.py` 로 만듦: 본판 index.html 디자인 + 스크립트 안 `GH_GAMES` 목록. 본판을 고친 뒤에도 다시 실행
+## 반별 오락실 (링크 4개)
+- `/` 1:1 학생용 (본판 index.html)
+- `/hanja/` 한자어로 시작하는 중국어과정 (그랑힐스) · 게임 3개를 1번부터 차례로 · 비밀번호 없음 (`/grandhills/`는 여기로 이동)
+- `/adult-high/` 성인 중급~고급반 (임시 구성)
+- `/adult-basic/` 성인 입문~초급반 (임시 구성)
+- 반별 페이지는 `python3 tools/make_editions.py` 로 만듦. 게임 구성은 스크립트의 `EDITIONS`, 본판에 없는 게임 정보는 `EXTRA`. 본판을 고친 뒤에도 다시 실행
 
 © 2026 진담중국어. All rights reserved.

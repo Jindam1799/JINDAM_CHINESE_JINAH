@@ -118,14 +118,6 @@
   .go { text-align: center; background: var(--red); color: #fff; border: 3px solid var(--ink); border-radius: 12px; box-shadow: 0 4px 0 var(--ink); padding: 8px 0; font-size: 19px; }
   .empty { padding: 14px; text-align: center; color: var(--mute); background: #fffdf8; border: 3px dashed #d9c9b6; border-radius: 14px; font-size: 15px; }
 
-  /* 수업존 잠금 */
-  .lock-box { display: flex; flex-direction: column; align-items: center; gap: 10px; text-align: center; background: #f3ece2; border: 4px dashed var(--ink); border-radius: 18px; padding: 18px 16px; }
-  .lock-box .big { font-size: 34px; }
-  .lock-box p { margin: 0; color: #4a3a3f; font-size: 15.5px; line-height: 1.5; }
-  .lock-row { display: flex; gap: 8px; width: min(320px, 100%); }
-  .lock-row input { flex: 1; min-width: 0; font: inherit; font-size: 17px; padding: 8px 10px; border: 3px solid var(--ink); border-radius: 10px; background: #fff; }
-  .lock-row button { background: var(--ink); color: #fff; border: 0; border-radius: 10px; padding: 0 14px; font-size: 16px; }
-  .lock-msg { min-height: 1.2em; font-size: 14px; color: var(--red); }
 
   footer { margin-top: 26px; text-align: center; color: var(--mute); font-size: 13.5px; line-height: 1.7; }
   footer b { color: var(--ink); font-weight: 400; }
@@ -182,7 +174,7 @@
       <div class="intro-sec">
         <h3>어떻게 찾나요?</h3>
         <ul>
-          <li><b>존</b> · 무엇을 연습하나: 한자존 · 단어존 · 문장존 · 수업존</li>
+          <li><b>존</b> · 무엇을 연습하나: 한자존 · 단어존 · 문장존</li>
           <li><b>훈련 지도</b> · 어떻게 훈련하나: 맨 위 4단계를 누르면 그 단계 게임만 모아 봐요</li>
           <li><b>꼬리표</b> · 누구·어떤 목표: HSK·TSC·초등·청소년·성인으로 골라 봐요</li>
         </ul>
@@ -237,13 +229,10 @@
     { id: 'han', name: '한자존', note: '한자와 우리말 한자어를 부담 없이 만나요', icon: 'han', color: '#5aa9e6' },
     { id: 'word', name: '단어존', note: '짝꿍어휘로 단어를 덩어리로 연결해요', icon: 'word', color: '#2f9a7a' },
     { id: 'sent', name: '문장존', note: '덩어리 연결부터 1초 툭! 반응까지', icon: 'talk', color: '#e08a2e' },
-    { id: 'class', name: '수업존', note: '수업 복습용 게임 · 선생님이 개별로 알려 줘요', icon: 'lock', color: '#7a6a62', locked: true },
   ];
   // ===== 게임 목록 (새 게임은 여기에 한 줄 추가 · 아이콘은 icons/ 폴더) =====
   // steps: 단계 배지 최대 2개 · retry: 오답 다시 도전 모드 · who: 초등/청소년/성인 · exam: 'HSK 4급' 'TSC' 등 · topic: 주제 · min: 소요시간(분)
   var GAMES = [
-    { zone: 'han', name: '한자어 탐정', url: 'https://jindamdetectivestudent.vercel.app/', icon: 'detective', steps: ['see'], retry: false, who: ['초등'], exam: [], topic: ['초등 한자어'], min: 10, desc: '우리말 속 한자를 찾으면 중국어가 툭! 사건을 풀고 도장을 모아요.' },
-    { zone: 'han', name: '진담 한자어 놀이터', url: 'https://jindamhanzistudyfor-students.vercel.app/', icon: 'hanzistudy', steps: ['see', 'link'], retry: true, who: ['초등'], exam: [], topic: ['교과서 한자어'], min: 10, desc: '교과서 속 한자어를 쪼개 보고, 따라 쓰고, 중국어 소리까지 들어요.' },
     { zone: 'han', name: '진담한자톡', url: 'https://jindamhanzitalk.vercel.app/', icon: 'hanzitalk', steps: ['see'], retry: false, who: ['초등', '청소년'], exam: [], topic: ['부수', '한자 쓰기'], min: 5, desc: '부수로 배우는 한자 쓰기 게임이에요.' },
     { zone: 'han', name: '진담 HSK4 한자톡', url: 'https://jindamhanzitalkhsk4.vercel.app/', icon: 'hanzitalk4', steps: ['see'], retry: false, who: ['청소년', '성인'], exam: ['HSK 4급'], topic: ['한자 쓰기'], min: 5, desc: 'HSK 4급 필수 어휘를 직접 써 보며 익혀요.' },
     { zone: 'word', name: '덩어리 숲', url: 'https://jindam1799.github.io/jindam_forest_student_hsk3.0/', icon: 'forest', steps: ['link'], retry: true, who: ['청소년', '성인'], exam: ['HSK 1~5급'], topic: ['캐릭터 키우기'], min: 5, desc: 'HSK 단어와 짝꿍어휘를 익히며 나만의 식물 친구를 키워요.' },
@@ -252,20 +241,9 @@
     { zone: 'word', name: '진담 블록퍼즐', url: 'https://jindamblockpuzzle.vercel.app/', icon: 'puzzle', steps: ['link'], retry: false, who: ['청소년', '성인'], exam: ['HSK'], topic: ['퍼즐'], min: 10, desc: '단어 퀴즈를 풀고 블록 퍼즐을 맞춰요.' },
     { zone: 'word', name: '진담점프', url: 'https://jindamjump.vercel.app/', icon: 'jump', steps: ['tuk', 'see'], retry: false, who: ['청소년', '성인'], exam: ['HSK 4급'], topic: ['듣기'], min: 5, desc: '용암을 피해 위로 점프! 중국어를 듣고 재빨리 뜻을 골라요.' },
     { zone: 'word', name: '천하통일 중국어', url: 'https://threekingdomnewdemo.vercel.app/', icon: 'threekingdom', steps: ['tuk', 'link'], retry: true, who: ['청소년', '성인'], exam: [], topic: ['삼국지', '단어 대결'], min: 10, desc: '말로 싸우는 진담군 장수! 단어로 삼국지 명장 30명에게 도전해 천하를 통일해요.' },
-    { zone: 'sent', name: '速成 덩어리 툭!', url: 'https://jindam1799.github.io/jindam_sucheng_tuk/', icon: 'sucheng', steps: ['tuk', 'mine'], retry: true, who: ['초등', '청소년'], exam: [], topic: ['회화', '汉语口语速成'], min: 10, desc: '교재 16~30과 표현을 덩어리로 익히고 1초 안에 툭! 말해요.' },
-    { zone: 'sent', name: '덩어리 툭 고급회화', url: 'https://jindam1799.github.io/jindam_gogeup/', icon: 'gogeup', steps: ['mine', 'tuk'], retry: true, who: ['성인'], exam: [], topic: ['고급회화'], min: 10, desc: '고급반 교재 표현으로 내 문장을 만들고 바로 반응해요.' },
     { zone: 'sent', name: '진담 도시 탐정 런', url: 'https://jindamcityrunnerv1.vercel.app/', icon: 'cityrunner', steps: ['link', 'tuk'], retry: false, who: ['초등', '청소년'], exam: [], topic: ['중국 도시', '탐정'], min: 15, desc: '말을 훔친 무음단을 쫓아 중국 도시를 달려요! 중국어로 말을 되찾고 범인을 잡아요.' },
-    // 수업존 (잠금): 수업 복습용 · 개별 제공
-    { zone: 'class', name: '덩어리 숲속의 모험(그랑힐스)', url: 'https://jindamchineseadventure.vercel.app/kids', icon: 'adventure', steps: ['see', 'link'], retry: true, who: ['초등'], exam: [], topic: ['초등 한자어'], min: 10, desc: '그랑힐스 수업에서 배운 한자어로 대나무숲을 달려요.' },
-    { zone: 'class', name: 'HSK 블록 퍼즐(그랑힐스)', url: 'https://jindamblockpuzzle.vercel.app/grandhills/', icon: 'puzzle', steps: ['link'], retry: true, who: ['초등'], exam: [], topic: ['초등 한자어', '퍼즐'], min: 10, desc: '그랑힐스 활동지 4장 단어로 퀴즈를 풀고 블록 퍼즐을 맞춰요.' },
-    { zone: 'class', name: '진담점프(그랑힐스)', url: 'https://jindamjump.vercel.app/granhills/', icon: 'jump', steps: ['tuk', 'see'], retry: false, who: ['초등'], exam: [], topic: ['초등 한자어', '듣기'], min: 5, desc: '그랑힐스 활동지(학교·달력·동네 간판·시계)의 중국어를 듣고 뜻을 골라 용암을 피해 점프!' },
   ];
-  // 수업존 비밀번호 (선생님만): sha-256('jindam:비밀번호')
-  var CLASS_HASH = '8e8848372d54316e6ed201c3bbfec0bcd076198268853df1fbb79e5601eecf21';
-
   var state = { room: 'all', step: null, exam: null, who: null };
-  var unlocked = false;
-  try { unlocked = localStorage.getItem('jindam-arcade-class') === '1'; } catch (e) {}
 
   function esc(t) { var d = document.createElement('div'); d.textContent = t; return d.innerHTML; }
   function ic(name) { return '<svg class="ico"><use href="#i-' + name + '"></use></svg>'; }
@@ -280,7 +258,7 @@
   function renderRooms() {
     var list = [{ id: 'all', name: '전체', icon: 'all', note: '모든 존' }].concat(ZONES);
     document.getElementById('rooms').innerHTML = list.map(function (z) {
-      var cnt = z.id === 'all' ? GAMES.filter(function (g) { return g.zone !== 'class'; }).length : GAMES.filter(function (g) { return g.zone === z.id; }).length;
+      var cnt = z.id === 'all' ? GAMES.length : GAMES.filter(function (g) { return g.zone === z.id; }).length;
       return '<button type="button" class="room' + (state.room === z.id ? ' on' : '') + '" data-room="' + z.id + '" style="--rc:' + (z.color || 'var(--ink)') + '"><span class="ri">' + ic(z.icon) + '</span>' + esc(z.name) + ' <small>' + (z.locked ? '잠금' : cnt + '개') + '</small></button>';
     }).join('');
   }
@@ -320,41 +298,15 @@
     var n = 0;
     ZONES.forEach(function (z) {
       if (state.room !== 'all' && state.room !== z.id) return;
-      if (state.room === 'all' && z.locked) return; // 수업존은 따로 눌러서
       var list = GAMES.filter(function (g) { return g.zone === z.id; });
       html += '<section class="zone" id="z-' + z.id + '"><div class="zone-head"><span class="zi" style="--zc:' + z.color + '">' + ic(z.icon) + '</span><h2>' + esc(z.name) + '</h2><p>' + esc(z.note) + '</p></div>';
-      if (z.locked && !unlocked) {
-        html += '<div class="lock-box"><span class="big">' + ic('lock') + '</span><p>수업존에는 수업 복습용 게임이 있어요.<br>선생님이 알려 준 개별 링크로 들어가거나, 수업 비밀번호를 넣어 주세요.</p>' +
-          '<form class="lock-row" id="lock-form"><input type="password" inputmode="numeric" autocomplete="off" id="lock-in" placeholder="수업 비밀번호" aria-label="수업 비밀번호"><button type="submit">열기</button></form><span class="lock-msg" id="lock-msg"></span></div>';
-      } else {
-        var shown = list.filter(pass);
-        html += shown.length ? '<div class="grid">' + shown.map(function (g) { return card(g, n++); }).join('') + '</div>' : '<div class="empty">조건에 맞는 게임이 아직 없어요</div>';
-      }
+      var shown = list.filter(pass);
+      html += shown.length ? '<div class="grid">' + shown.map(function (g) { return card(g, n++); }).join('') + '</div>' : '<div class="empty">조건에 맞는 게임이 아직 없어요</div>';
       html += '</section>';
     });
     document.getElementById('games').innerHTML = html;
-    var f = document.getElementById('lock-form');
-    if (f) f.addEventListener('submit', tryUnlock);
   }
   function renderAll() { renderSteps(); renderRooms(); renderFilters(); renderGames(); }
-
-  function sha256(text) {
-    if (!window.crypto || !crypto.subtle) return Promise.resolve('');
-    return crypto.subtle.digest('SHA-256', new TextEncoder().encode(text)).then(function (b) {
-      return Array.prototype.map.call(new Uint8Array(b), function (x) { return ('0' + x.toString(16)).slice(-2); }).join('');
-    });
-  }
-  function tryUnlock(e) {
-    e.preventDefault();
-    var v = (document.getElementById('lock-in').value || '').trim();
-    sha256('jindam:' + v).then(function (h) {
-      if (h === CLASS_HASH) {
-        unlocked = true;
-        try { localStorage.setItem('jindam-arcade-class', '1'); } catch (er) {}
-        renderGames();
-      } else document.getElementById('lock-msg').textContent = '비밀번호가 달라요. 선생님께 물어봐 주세요.';
-    });
-  }
 
   document.addEventListener('click', function (e) {
     var b = e.target.closest('button');
@@ -365,11 +317,10 @@
     else if (b.dataset.who) state.who = state.who === b.dataset.who ? null : b.dataset.who;
     else if (b.dataset.reset) { state.step = state.exam = state.who = null; }
     else return;
-    if (b.dataset.step && state.room === 'class') state.room = 'all';
     renderAll();
   });
 
-  // 개별 링크: ?room=class 로 들어오면 수업존을 바로 보여 줌 (비밀번호는 그대로)
+  // ?room=han 처럼 존을 바로 열 수 있음
   try {
     var q = new URLSearchParams(location.search);
     var r = q.get('room');
